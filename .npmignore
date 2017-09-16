@@ -1,0 +1,22 @@
+# Logs
+logs
+*.log*
+
+# Dependency directories
+node_modules/
+
+# Optional npm cache directory
+.npm
+
+# FS
+.DS_Store
+thumbs.db
+
+# Docs
+*.md
+
+# Workflow
+.idea
+api-docs/
+examples/
+.travis.yml
