@@ -14,10 +14,6 @@ const path = require('path');
 const lodash = require('lodash');
 const modernizr = require('modernizr');
 
-// utils
-const getCustomTestsPath = require('./custom-tests-path');
-const getCustomMetadata = require('./custom-metada');
-
 // ----------------------------------------
 // Private
 // ----------------------------------------
@@ -80,17 +76,16 @@ function build (config = {}, resolve, reject) {
 		excludeTests = [],
 		classPrefix = '',
 		options = [],
-		customTests
+		minify,
+		metadata,
+		customMetadata
 	} = lodash.merge({}, config);
 
 	resolve = defaultCb(resolve);
 	reject = defaultCb(reject);
-	customTests = getCustomTestsPath(customTests);
 
 	let featuresDetects = [];
 	let filteredTest = tests.filter(test => !~excludeTests.indexOf(test));
-	let metadata = modernizr.metadata();
-	let customMetadata = customTests ? getCustomMetadata(customTests) : [];
 
 	customMetadata.forEach(data => getTest(featuresDetects, filteredTest, data, true));
 	if (filteredTest.length) {
@@ -106,6 +101,7 @@ function build (config = {}, resolve, reject) {
 		modernizr.build({
 			classPrefix,
 			options,
+			minify,
 			'feature-detects': featuresDetects
 		}, resolve);
 	} catch (err) {

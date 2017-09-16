@@ -19,4 +19,6 @@ thumbs.db
 .idea
 api-docs/
 examples/
+detects/
+custom-feature-detects/
 .travis.yml

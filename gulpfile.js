@@ -8,11 +8,13 @@ const gulp = require('gulp');
 const jsdoc = require('gulp-jsdoc3');
 const del = require('del');
 
+const modernizr = require('./index');
+
 // ----------------------------------------
 // Private
 // ----------------------------------------
 
-const docsSrc = ['./index.js'];
+const docsSrc = ['./index.js', './utils/**/*.js'];
 const docsDest = './api-docs';
 
 const jsdocConfig = {
@@ -76,3 +78,30 @@ gulp.task('docs', function (done) {
 gulp.task('docs-watch', gulp.series('docs', function () {
 	gulp.watch(docsSrc, gulp.series('docs'));
 }));
+
+gulp.task('modernizr', function() {
+	let src = [
+		'./detects/**/*.css',
+		'./detects/**/*.js',
+		'!./detects/**/modernizr.js'
+	];
+
+	return gulp.src(src)
+		.pipe(modernizr())
+		.on('data', file => {
+			console.log(file);
+		});
+});
+
+// buildModernizr({
+// 	'tests': [
+// 		'android',
+// 		'cookies',
+// 		'ambientlight',
+// 		'ellipsis'
+// 	],
+// 	'excludeTests': [
+// 		'ellipsis'
+// 	],
+// 	customTests: './custom-feature-detects/'
+// });
