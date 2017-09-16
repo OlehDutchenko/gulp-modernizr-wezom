@@ -52,6 +52,11 @@ function pluginError (error, errorOptions) {
 
 function gulpModernizrWezom (options) {
 	function readBuffer (file, enc, cb) {
+		let notSupported = notSupportedFile(file, pluginError, {silent: true});
+		if (Array.isArray(notSupported)) {
+			return cb(null);
+		}
+		console.log(buildModernizr);
 		return cb(null);
 	}
 
