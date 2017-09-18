@@ -92,16 +92,3 @@ gulp.task('modernizr', function() {
 		}))
 		.pipe(gulp.dest('./tmp/'));
 });
-
-// buildModernizr({
-// 	'tests': [
-// 		'android',
-// 		'cookies',
-// 		'ambientlight',
-// 		'ellipsis'
-// 	],
-// 	'excludeTests': [
-// 		'ellipsis'
-// 	],
-// 	customTests: './custom-feature-detects/'
-// });

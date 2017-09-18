@@ -3,5 +3,5 @@ if (Modernizr.touchevents) {
 }
 
 if (window.Modernizr.canvas) {
-	console.log(9999);
+	console.log(8888);
 }

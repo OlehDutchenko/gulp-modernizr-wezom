@@ -1,6 +1,7 @@
 'use strict';
 
 /**
+ * Plugin index
  * @module
  */
 
@@ -34,14 +35,16 @@ const findTests = require('./utils/find-tests');
  * Plugin error
  * @param {string|Error} error
  * @param {Object} [errorOptions]
- * @return {PluginError}
+ * @returns {PluginError}
+ * @private
  */
 function pluginError (error, errorOptions) {
 	return new gutil.PluginError(`${pkg.name}@${pkg.version}`, error, errorOptions);
 }
 
 /**
- * @param {Array} list
+ * @param {Array.<Object>} list
+ * @returns {Array}
  * @private
  */
 function parseProps (list) {
@@ -73,7 +76,7 @@ function parseProps (list) {
  * @param {string} [config.classPrefix=''] - A string that is added before each CSS class
  * @param {Array.<string>} [config.options=[]] - Modernizr build options
  * @param {boolean} [config.minify=false] - Minimise resulting file
- * @return {DestroyableTransform}
+ * @returns {DestroyableTransform}
  */
 function gulpModernizrWezom (config = {}) {
 	let {
@@ -91,8 +94,13 @@ function gulpModernizrWezom (config = {}) {
 	let customMetadata = gulpModernizrWezom.getCustomMetadata(customTests);
 	metadata.concat(customMetadata).forEach(data => testList.push(data.property));
 
+	// read each file
 	function readBuffer (file, enc, cb) {
-		let notSupported = notSupportedFile(file, pluginError, {silent: true});
+		let notSupported = notSupportedFile(file, pluginError, {
+			noUnderscore: false,
+			silent: true
+		});
+
 		if (Array.isArray(notSupported)) {
 			return cb(null);
 		}
@@ -100,6 +108,7 @@ function gulpModernizrWezom (config = {}) {
 		return cb(null);
 	}
 
+	// after reading
 	function afterRead (cb) {
 		let entryTests = tests.concat([]);
 		let entryExcludeTests = excludeTests.concat([]);
@@ -131,6 +140,7 @@ function gulpModernizrWezom (config = {}) {
 		msg.push('', `${start} Excluded tests in all lists:`, entryExcludeTests);
 		console.log(msg.join('\n'));
 
+		// send to building
 		buildModernizr({
 			tests,
 			excludeTests,
@@ -158,13 +168,22 @@ function gulpModernizrWezom (config = {}) {
 /**
  * Plugin name
  * @type {string}
+ * @member {string} gulpModernizrWezom::pluginName
  */
 gulpModernizrWezom.pluginName = pkg.name;
+
+/**
+ * Plugin version
+ * @type {string}
+ * @member {string} gulpModernizrWezom::pluginVersion
+ */
+gulpModernizrWezom.pluginVersion = pkg.version;
 
 /**
  * Get metadata of own Modernizr tests
  * @type {Function}
  * @returns {Array.<Object>}
+ * @method gulpModernizrWezom::getMetadata
  */
 gulpModernizrWezom.getMetadata = function () {
 	return parseProps(modernizr.metadata());
@@ -175,6 +194,7 @@ gulpModernizrWezom.getMetadata = function () {
  * @type {Function}
  * @param {string} [customTests] - Relative path from process.cwd() to folder with your custom tests
  * @returns {Array.<Object>}
+ * @method gulpModernizrWezom::getCustomMetadata
  */
 gulpModernizrWezom.getCustomMetadata = function (customTests) {
 	customTests = getCustomTestsPath(customTests);

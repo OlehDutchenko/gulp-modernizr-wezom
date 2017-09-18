@@ -14,7 +14,6 @@
  * @param {Array.<string>} testList
  * @param {Array} foundedTests
  * @param {string} classPrefix
- * @returns {Array.<Object>}
  * @sourceCode
  */
 function findTests (file, testList, foundedTests, classPrefix) {
