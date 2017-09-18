@@ -9,3 +9,7 @@
 .canvasblending {
 	position: static;
 }
+
+.supports-no-svg {
+	position: relative;
+}

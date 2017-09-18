@@ -87,9 +87,11 @@ gulp.task('modernizr', function() {
 	];
 
 	return gulp.src(src)
-		.pipe(modernizr())
+		.pipe(modernizr({
+			classPrefix: 'supports-'
+		}))
 		.on('data', file => {
-			console.log(file);
+			// console.log(file);
 		});
 });
 

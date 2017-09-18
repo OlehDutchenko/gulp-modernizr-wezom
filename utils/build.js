@@ -66,23 +66,34 @@ function getTest (featuresDetects, filteredTest, data, isCustomTest) {
 
 /**
  * @param {Object} [config={}] - build options
- * @param {Function} [resolve]
- * @param {Function} [reject]
+ * @param {Array.<string>} [config.tests=[]] - List of required tests
+ * @param {Array.<string>} [config.excludeTests=[]] - A list of test cases that need to be excluded if they are found
+ * @param {string} [config.classPrefix=''] - A string that is added before each CSS class
+ * @param {Array.<string>} [config.options=[]] - Modernizr build options
+ * @param {boolean} [config.minify=false] - Minimise resulting file
+ * @param {boolean} [config.enableJSClass=true] - Whether or not to update `.no-js` to `.js` on the root element
+ * @param {boolean} [config.enableClasses=true] - Whether or not Modernizr should add its CSS classes at all
+ * @param {Array.<Object>} [config.metadata=[]] - Metadata of own Modernizr tests
+ * @param {Array.<Object>} [config.customMetadata=[]] - Metadata of user custom Modernizr tests
+ * @param {Function} [done] - Success callback
+ * @param {Function} [fail] - Error callback
  * @sourceCode
  */
-function build (config = {}, resolve, reject) {
+function build (config = {}, done, fail) {
 	let {
 		tests = [],
 		excludeTests = [],
 		classPrefix = '',
 		options = [],
-		minify,
-		metadata,
-		customMetadata
+		minify = false,
+		enableJSClass = true,
+		enableClasses = true,
+		metadata = [],
+		customMetadata = []
 	} = lodash.merge({}, config);
 
-	resolve = defaultCb(resolve);
-	reject = defaultCb(reject);
+	done = defaultCb(done);
+	fail = defaultCb(fail);
 
 	let featuresDetects = [];
 	let filteredTest = tests.filter(test => !~excludeTests.indexOf(test));
@@ -102,10 +113,12 @@ function build (config = {}, resolve, reject) {
 			classPrefix,
 			options,
 			minify,
+			enableJSClass,
+			enableClasses,
 			'feature-detects': featuresDetects
-		}, resolve);
+		}, done);
 	} catch (err) {
-		reject(err);
+		fail(err);
 	}
 }
 

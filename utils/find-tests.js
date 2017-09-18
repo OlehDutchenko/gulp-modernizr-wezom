@@ -12,33 +12,35 @@
 /**
  * @param {Object} file
  * @param {Array.<string>} testList
- * @param {Array.<string>} foundedList
+ * @param {Array} foundedTests
  * @param {string} classPrefix
+ * @returns {Array.<Object>}
  * @sourceCode
  */
-function findTests (file, testList, foundedList, classPrefix) {
-	let content = String(file.contents);
+function findTests (file, testList, foundedTests, classPrefix) {
 	let extname = file.extname;
-
 	if (!~['.css', '.js'].indexOf(extname)) {
 		return;
 	}
 
-	let founded = {file: file.path, tests: []};
-	let pref = (extname === '.js') ? 'Modernizr\\.' : '\\.(no-)?';
+	let founded = [];
+	let content = String(file.contents);
+	let cssPref = (typeof classPrefix === 'string' && classPrefix) ? classPrefix : '';
+	let pref = (extname === '.js') ? 'Modernizr\\.' : `\\.${cssPref}(no-)?`;
 
 	testList.forEach(test => {
-		let pattern = new RegExp(pref + classPrefix + test + '\\b[^-]', 'g');
-		console.log(pattern);
+		let pattern = new RegExp(pref + test + '\\b[^-]', 'g');
 		if (pattern.test(content)) {
-			founded.tests.push(test);
+			founded.push(test);
 		}
 	});
 
-	if (founded.tests.length) {
-		foundedList.push(founded);
+	if (founded.length) {
+		foundedTests.push({
+			path: file.path,
+			tests: founded
+		});
 	}
-	console.log(foundedList);
 }
 
 // ----------------------------------------
