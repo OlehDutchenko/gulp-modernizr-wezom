@@ -335,34 +335,34 @@ gulp.task('modernizr', function() {
 
 ---
 
-### Поиск тестов в `.js` и `.css` файлах
+### Search for tests in `.js` and` .css` files
 
-Для поиска нужных тестов, используется контент каждого входящяго файла, Вашей `gulp` задачи. Текстовый контент тестируеться регулярными выражениями, которые составляються для каждого из тестов. 
+To search for the necessary tests, the content of each incoming file is used. Text content is tested by regular expressions, which are compiled for each of the tests.
 
-Если совпадение найдено - тест добавляется в общий билд.
+If a match is found, the test is added to the general build.
 
-___CSS файлы___
+___CSS files___
 
-Для поиска тестов используеться следующее регулярное выражение:
+To find the tests, plugin use the following regular expression:
 
 ```js
 /\.(no-)?TEST\b[^-]/g
 ```
 
-`TEST` - это имя каждого теста в цыкле.
+`TEST` - this is the name of each test in the loop.
 
-Если Вы используете свойство `classPrefix`, то поиск тестов в CSS файлах будет выполнен также с учетом значения этого свойтва.  
+If you use the property `classPrefix`, then the search for the tests in CSS files will also be performed taking into account the value of this property.
 
-Пример регулярного выражения для поиска, если `classPrefix: 'supports-'`
+An example of a regular expression for searching, if `classPrefix: 'supports-'`
 
 ```js
 /\.supports-(no-)?canvas\b[^-]/g
 ```
 
-___JS файлы___
+___JS files___
 
-Свойство `classPrefix` - никак не влияет на поиск в `js` файлах.  
-Для поиска тестов используеться следующее регулярное выражение:
+Property `classPrefix` - does not affect the search in `js` files.  
+To find the tests, plugin use the following regular expression:
 
 ```js
 /Modernizr\.filesystem\b[^-]/g
