@@ -88,7 +88,7 @@ gulp.task('modernizr', function() {
 
 	return gulp.src(src)
 		.pipe(gulpModernizrWezom({
-			customTests: './custom-feature-detects/',
+			customTests: './my-feature-detects/custom-tests',
 			options: [
 				'setClasses'
 			]

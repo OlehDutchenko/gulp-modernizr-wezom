@@ -17,7 +17,7 @@
 
 ## Основные возможности и преимущества
 
-- [Modernizr v3](https://github.com/Modernizr/Modernizr)
+- [Modernizr v3 ⇒](https://github.com/Modernizr/Modernizr)
 - [Полное управление составлением итогового файла](#Опции)
 	- [Явное указание нужных тестов, которые нужны при любых условиях](#tests)
 	- [Автоматическое добавление тестов из входящих файлов `gulp` задачи](#gulpmodernizrwezom-options-)
@@ -25,7 +25,7 @@
 	- [Автоматическое добавление опций `Moderznizr`, если они нужны для тестов сборки](#gulpmodernizrwezom-options-)
 	- [Возможность добавлять собственные тесты и переписывать _"родные"_ тесты `Modernizr`](#customtests)
 	- [Возможность исключать нежелательные тесты](#excludetests)
-- Корректный поиск тестов в `.js` и `.css` файлах
+- [Корректный поиск тестов в `.js` и `.css` файлах](#Поиск-тестов-в-js-и-css-файлах)
 
 ---
 
@@ -51,8 +51,20 @@ gulp.task('modernizr', function() {
     ];
 
     return gulp.src(src)
-        .pipe(gulpModernizrWezom())
-        .pipe(gulp.dest('./dist/'));
+        .pipe(gulpModernizrWezom({
+            tests: [ // добавить тесты, внезависимости от поиска в файлах
+                'touchevents',
+                'ambientlight',
+                'adownload',
+                'canvasblending'
+            ],
+            customTests: './my-feature-detects/custom-tests/', // пользовательские тесты
+            excludeTests: [ // исключить нежелательные тесты
+                'opacity',
+                'checked'
+            ]
+        }))
+        .pipe(gulp.dest('./dist/')); // сохранить итоговый файл modernizr.js
 });
 ```
 
@@ -118,7 +130,12 @@ gulp.task('modernizr', function() {
 
     return gulp.src(src)
         .pipe(gulpModernizrWezom({
-            tests: ['touchevents', 'ambientlight', 'adownload', 'canvasblending']
+            tests: [
+                'touchevents',
+                'ambientlight',
+                'adownload',
+                'canvasblending'
+            ],
         }))
         .pipe(gulp.dest('./dist/'));
 });
@@ -126,8 +143,58 @@ gulp.task('modernizr', function() {
 
 ##### `customTests`
 
+тип данных `string`  
+по умолчанию `undefined`
+
+Относительный путь от _текущей рабочей директории_ (`process.cwd()`) к директории с Вашим пользовательскими тестами
+
+Есть несколько пунктов, которые Вы должны соблюдать и знать для корректного включения Ваших тестов в обший билд:
+
+1. Внутри директории должны находится только `js` файлы.
+1. Каждый файл теста должен иметь правильную структуру файла, для корректного построения метаданных `Modernizr`. Заготовка файла [`my-feature-detects/sample.js`](./my-feature-detects/sample.js), пример пользовательского теста [`my-feature-detects/custom-tests/android.js`](./my-feature-detects/custom-tests/android.js)
+1. Если Вы указаываете имя теста, который уже есть в списке _"родных"_ тестов `Modernizr` - то перепишите его выполнение своим.
+1. Вы должны указать путь к родительской директории всех тестов, внутри Вы можете разбивать свои тесты на под директории, они будут включенны также.
+1. Путь к Вашей к диретории НЕ должен содержать директорию с именем `feature-detects`, как пример можете использовать имя `my-feature-detects`
+
+
 ##### `excludeTests`
 
+тип данных `Array.<string>`  
+по умолчанию `[]`
+
+Список тестов, которые следует исключить при люьых обстаятельствах.  
+Привил имен такое же как при указании свойства [`tests`](#tests)
+
+Пример
+
+```js
+const gulp = require('gulp');
+const gulpModernizrWezom = require('gulp-modernizr-wezom');
+
+gulp.task('modernizr', function() {
+    let src = [
+        './dist/**/*.css',
+        './dist/**/*.js',
+        '!./dist/**/modernizr.js'
+    ];
+
+    return gulp.src(src)
+        .pipe(gulpModernizrWezom({
+            tests: [
+                'touchevents',
+                'ambientlight',
+                'adownload',
+                'canvasblending'
+            ],
+            customTests: './my-feature-detects/custom-tests/',
+            excludeTests: [
+                'opacity',
+                'checked'
+            ]
+        }))
+        .pipe(gulp.dest('./dist/'));
+});
+```
 ---
 
 ### Поиск тестов в `.js` и `.css` файлах

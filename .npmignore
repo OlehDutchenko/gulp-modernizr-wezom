@@ -18,7 +18,5 @@ thumbs.db
 # Workflow
 .idea
 api-docs/
-tmp/
 detects/
-custom-feature-detects/
 .travis.yml
