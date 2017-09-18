@@ -18,11 +18,11 @@
 ## Основные возможности и преимущества
 
 - [Modernizr v3 ⇒](https://github.com/Modernizr/Modernizr)
-- [Полное управление составлением итогового файла](#Опции)
+- [Полное управление составлением итогового файла](#Конфигурация)
 	- [Явное указание нужных тестов, которые нужны при любых условиях](#tests)
-	- [Автоматическое добавление тестов из входящих файлов `gulp` задачи](#gulpmodernizrwezom-options-)
+	- [Автоматическое добавление тестов из входящих файлов `gulp` задачи](#Поиск-тестов-в-js-и-css-файлах)
 	- [Явное указание нужных опций, которые нужны при любых условиях](#options)
-	- [Автоматическое добавление опций `Moderznizr`, если они нужны для тестов сборки](#gulpmodernizrwezom-options-)
+	- [Автоматическое добавление опций `Moderznizr`, если они нужны для тестов сборки](#options)
 	- [Возможность добавлять собственные тесты и переписывать _"родные"_ тесты `Modernizr`](#customtests)
 	- [Возможность исключать нежелательные тесты](#excludetests)
 - [Корректный поиск тестов в `.js` и `.css` файлах](#Поиск-тестов-в-js-и-css-файлах)
@@ -62,7 +62,12 @@ gulp.task('modernizr', function() {
             excludeTests: [ // исключить нежелательные тесты
                 'opacity',
                 'checked'
-            ]
+            ],
+             options: [ // добавить опции для ядра Modernizr
+                 'setClasses',
+                 'mq'
+             ],
+             minify: true // минифицировать итоговый файл modernizr.js
         }))
         .pipe(gulp.dest('./dist/')); // сохранить итоговый файл modernizr.js
 });
@@ -92,15 +97,15 @@ Name | Type | Description
 
 Метод возвращает метаданные _"пользовательских"_ тестов `Modernizr` в виде массива.
 
-### gulpModernizrWezom( _[options]_ )
+### gulpModernizrWezom( _[config]_ )
 
 Метод построения `modernizr.js`.  
-Метод принимает опции и на их основе производит поиск тестов во входящих файлах. Если для определеных тестов нужны дополнительные опции, они будут добавленны автоматически (на основе метаданных каждого теста, к примеру [`hasEvent`](https://github.com/Modernizr/Modernizr/blob/master/lib/config-all.json#L7) будет автоматически добавлен при тесте [`ambientlight`](https://github.com/Modernizr/Modernizr/blob/master/feature-detects/ambientlight.js))  
+Метод принимает конфигурацию и на их основе производит поиск тестов во входящих файлах. 
  
 После чего выполняется создание файла `modernizr.js`.  
 Даже если никаких тестов не будет указано или обнаржено - файл `modernizr.js` все равно будет создан, с ядром библиотеки.
 
-#### Опции
+#### Конфигурация
 
 ##### `tests`
 
@@ -155,6 +160,7 @@ gulp.task('modernizr', function() {
 1. Если Вы указаываете имя теста, который уже есть в списке _"родных"_ тестов `Modernizr` - то перепишите его выполнение своим.
 1. Вы должны указать путь к родительской директории всех тестов, внутри Вы можете разбивать свои тесты на под директории, они будут включенны также.
 1. Путь к Вашей к диретории НЕ должен содержать директорию с именем `feature-detects`, как пример можете использовать имя `my-feature-detects`
+1. Вы можете указать только один путь к нужной Вам директории
 
 
 ##### `excludeTests`
@@ -195,9 +201,161 @@ gulp.task('modernizr', function() {
         .pipe(gulp.dest('./dist/'));
 });
 ```
+
+##### `classPrefix`
+
+тип данных `string`  
+по умолчанию `undefined`
+
+Строка, которая добавляется перед каждым классом CSS.
+
+К примеру если указать `classPrefix: 'supports-'`, то `Modernizr` добавлять к `html` элементы с этой приставкой, к примеру - `supports-no-ambientlight supports-canvas`.
+
+Также ознакомтесь с разделом [Поиск тестов в `.js` и `.css` файлах](#Поиск-тестов-в-js-и-css-файлах) 
+
+
+
+##### `options`
+
+тип данных `Array.<string>`  
+по умолчанию `[]`
+
+Список опций, которые можно добавить для построения `Modernizr`.
+   
+- Полный список опций - https://github.com/Modernizr/Modernizr/blob/master/lib/config-all.json#L3
+- Описание большинства опций - https://modernizr.com/docs/#modernizr-api
+
+Если для определеных тестов нужны дополнительные опции, они будут добавленны автоматически (на основе метаданных каждого теста, к примеру [`hasEvent`](https://github.com/Modernizr/Modernizr/blob/master/lib/config-all.json#L7) будет автоматически добавлен при тесте [`ambientlight`](https://github.com/Modernizr/Modernizr/blob/master/feature-detects/ambientlight.js))
+
+Если Вы хотите чтобы получаная версия сборки `modernizr.js`, при подключении в браузере, добавляла CSS классы к `html` элементу, следует явно указать опцию `setClasses`
+
+Пример
+
+```js
+const gulp = require('gulp');
+const gulpModernizrWezom = require('gulp-modernizr-wezom');
+
+gulp.task('modernizr', function() {
+    let src = [
+        './dist/**/*.css',
+        './dist/**/*.js',
+        '!./dist/**/modernizr.js'
+    ];
+
+    return gulp.src(src)
+        .pipe(gulpModernizrWezom({
+            tests: [
+                'touchevents',
+                'ambientlight',
+                'adownload',
+                'canvasblending'
+            ],
+            customTests: './my-feature-detects/custom-tests/',
+            excludeTests: [
+                'opacity',
+                'checked'
+            ],
+            options: [
+                'setClasses',
+                'mq'
+            ]
+        }))
+        .pipe(gulp.dest('./dist/'));
+});
+```
+
+
+
+##### `minify`
+
+тип данных `boolean`  
+по умолчанию `false`
+
+Минифицировать итоговый файл `modernizr.js`.
+
+Вы также можете использовать альтернативные методы с минификации, к примеру используя [`gulp-uglify`](https://github.com/terinjokes/gulp-uglify) и, при необходимости [`gulp-sourcemaps`](https://github.com/gulp-sourcemaps/gulp-sourcemaps)
+
+Пример
+
+```js
+const gulp = require('gulp');
+const gulpModernizrWezom = require('gulp-modernizr-wezom');
+const gulpUglify = require('gulp-uglify');
+const gulpSourcemaps = require('gulp-sourcemaps');
+
+gulp.task('modernizr', function() {
+    let src = [
+        './dist/**/*.css',
+        './dist/**/*.js',
+        '!./dist/**/modernizr.js'
+    ];
+
+    return gulp.src(src)
+        .pipe(gulpModernizrWezom({
+            tests: [
+                'touchevents',
+                'ambientlight',
+                'adownload',
+                'canvasblending'
+            ],
+            customTests: './my-feature-detects/custom-tests/',
+            excludeTests: [
+                'opacity',
+                'checked'
+            ],
+            options: [
+                'setClasses',
+                'mq'
+            ]
+        }))
+        
+        .pipe(gulpSourcemaps.init())
+        .pipe(gulpUglify({
+            mangle: {
+            	except: ['Modernizr']
+            }
+        }))
+        .pipe(gulpSourcemaps.write('/'))
+        
+        .pipe(gulp.dest('./dist/'));
+});
+```
+
 ---
 
 ### Поиск тестов в `.js` и `.css` файлах
+
+Для поиска нужных тестов, используется контент каждого входящяго файла, Вашей `gulp` задачи. Текстовый контент тестируеться регулярными выражениями, которые составляються для каждого из тестов. 
+
+Если совпадение найдено - тест добавляется в общий билд.
+
+___CSS файлы___
+
+Для поиска тестов используеться следующее регулярное выражение:
+
+```js
+/\.(no-)?TEST\b[^-]/g
+```
+
+`TEST` - это имя каждого теста в цыкле.
+
+Если Вы используете свойство `classPrefix`, то поиск тестов в CSS файлах будет выполнен также с учетом значения этого свойтва.  
+
+Пример регулярного выражения для поиска, если `classPrefix: 'supports-'`
+
+```js
+/\.supports-(no-)?canvas\b[^-]/g
+```
+
+___JS файлы___
+
+Свойство `classPrefix` - никак не влияет на поиск в `js` файлах.  
+Для поиска тестов используеться следующее регулярное выражение:
+
+```js
+/Modernizr\.filesystem\b[^-]/g
+```
+
 
 
 
