@@ -364,8 +364,10 @@ Property `classPrefix` - does not affect the search in `js` files.
 To find the tests, plugin use the following regular expression:
 
 ```js
-/Modernizr\.filesystem\b[^-]/g
+/Modernizr\.TEST\b[^-]/g
 ```
+
+`TEST` - this is the name of each test in the loop.
 
 ---
 
