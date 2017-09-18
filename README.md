@@ -8,7 +8,7 @@
  
 :us: English
 |
-:ru: [Русский язык](https://github.com/dutchenkoOleg/gulp-modernizr-wezom/blob/master/README-RU.md)
+:ru: [Русский](https://github.com/dutchenkoOleg/gulp-modernizr-wezom/blob/master/README-RU.md)
 
 > _Gulp plugin for [moderznir](https://github.com/Modernizr/Modernizr), [Wezom studio](http://wezom.com.ua/) version_
 
@@ -23,7 +23,7 @@
 - [Installation](#installation)
 - [Example of use](#example-of-use)
 - [Methods and Parameters of the Plugin](#methods-and-parameters-of-the-plugin)
-- [Search for tests in `.js` and` .css` files](#Поиск-тестов-в-js-и-css-файлах)
+- [Search for tests in `.js` and` .css` files](#search-for-tests-in-js-andcss-files)
 - [Project info](#project-info)
 
 
@@ -32,12 +32,12 @@
 - [Modernizr v3 ⇒](https://github.com/Modernizr/Modernizr)
 - [Full control over the building your modernizr.js](#configuration)
 	- [Explicit indication of tests that are required under any conditions](#tests)
-	- [Automatic addition of tests from the incoming files of `gulp` task](#Поиск-тестов-в-js-и-css-файлах)
+	- [Automatic addition of tests from the incoming files of `gulp` task](#search-for-tests-in-js-andcss-files)
 	- [Explicit specification of options that are required under any conditions](#options)
 	- [Automatic addition of `Moderznizr` options, if they are needed for assembly tests](#options)
 	- [The ability to add custom tests and rewrite _"native"_ tests "Modernizr"](#customtests)
 	- [Ability to exclude unwanted tests](#excludetests)
-- [Correct search of tests in `.js` and` .css` files](#Поиск-тестов-в-js-и-css-файлах)
+- [Correct search of tests in `.js` and` .css` files](#search-for-tests-in-js-andcss-files)
 
 ---
 
@@ -124,13 +124,14 @@ Even if no tests are specified or detected - the file `modernizr.js` will still 
 data type `Array.<string>`  
 by default `[]`
 
-Список тестов которые можно указать как обязательные. Если такие тесты отсутствуют во входящих файлах, они всеравно будут добавлены в сборку.
+A list of tests that can be specified as mandatory. If such tests are not available in the incoming files, they will be added to the assembly in the same manner.
 
-Вам следует указывать имена тестов, так как они указанны в метаданных каждого теста (ключ `property`).    
-К примеру тест [`canvas/blending.js`](https://github.com/Modernizr/Modernizr/blob/master/feature-detects/canvas/blending.js) имеет значение [`canvasblending`](https://github.com/Modernizr/Modernizr/blob/master/feature-detects/canvas/blending.js#L4).
+You should specify the names of the tests, as they are specified in the metadata of each test (the `property` key).    
+For example, a test [`canvas/blending.js`](https://github.com/Modernizr/Modernizr/blob/master/feature-detects/canvas/blending.js) has the meaning
+ [`canvasblending`](https://github.com/Modernizr/Modernizr/blob/master/feature-detects/canvas/blending.js#L4).
 
-Есть некоторые файлы тестов, которые имеют несколько тестов в одном файле.  
-К примеру [`canvas/todataurl.js`](https://github.com/Modernizr/Modernizr/blob/master/feature-detects/canvas/todataurl.js) Включает в себя 3 теста [`["todataurljpeg", "todataurlpng", "todataurlwebp"]`](https://github.com/Modernizr/Modernizr/blob/master/feature-detects/canvas/todataurl.js#L4). При необходимости включить любой из трех - остальные также будут добавлены, так как это один файл.
+There are some test files that have multiple tests in one file. 
+For example [`canvas/todataurl.js`](https://github.com/Modernizr/Modernizr/blob/master/feature-detects/canvas/todataurl.js) Includes 3 tests [`["todataurljpeg", "todataurlpng", "todataurlwebp"]`](https://github.com/Modernizr/Modernizr/blob/master/feature-detects/canvas/todataurl.js#L4). If necessary, include any of the three - the rest will also be added, since this is one file.
 
 Example
 
@@ -163,16 +164,16 @@ gulp.task('modernizr', function() {
 data type `string`  
 by default `undefined`
 
-Относительный путь от _текущей рабочей директории_ (`process.cwd()`) к директории с Вашим пользовательскими тестами
+The relative path from the current working directory (`process.cwd ()`) to the directory with your user tests
 
-Есть несколько пунктов, которые Вы должны соблюдать и знать для корректного включения Ваших тестов в обший билд:
+There are several points that you must follow and know in order to correctly include your tests in the general build:
 
-1. Внутри директории должны находится только `js` файлы.
-1. Вы должны указать путь к родительской директории всех тестов, внутри Вы можете разбивать свои тесты на под директории, они будут включенны также.
-1. Путь к Вашей к диретории НЕ должен содержать директорию с именем `feature-detects`, как пример можете использовать имя `my-feature-detects`
-1. Вы можете указать только один путь к нужной Вам директории
-1. Каждый файл теста должен иметь правильную структуру файла, для корректного построения метаданных `Modernizr`. Заготовка файла - [`my-feature-detects/sample.js`](./my-feature-detects/sample.js), пример пользовательского теста - [`my-feature-detects/custom-tests/android.js`](./my-feature-detects/custom-tests/android.js)
-1. Если Вы указываете имя теста, который уже есть в списке _"родных"_ тестов `Modernizr` - то Вы перепишите его выполнение своим.
+1. Within the directory, only `js` files should be located.
+1. You must specify the path to the parent directory of all tests, inside you can break your tests into sub-directories, they will be included as well.
+1. The path to your directory should NOT contain a directory named `feature-detects`, as an example you can use the name` my-feature-detects`
+1. You can specify only one path to the directory you need
+1. Each test file must have the correct file structure, in order to correctly build the metadata `Modernizr`. File sample - [`my-feature-detects/sample.js`](./my-feature-detects/sample.js), sample user test - [`my-feature-detects/custom-tests/android.js`](./my-feature-detects/custom-tests/android.js)
+1. If you specify the name of the test, which is already in the list of _"native"_ tests of `Modernizr` - then you will rewrite it with your own.
 
 
 ##### `excludeTests`
@@ -219,11 +220,11 @@ gulp.task('modernizr', function() {
 data type `string`  
 by default `undefined`
 
-Строка, которая добавляется перед каждым классом CSS.
+A string that is added before each CSS class.
 
-К примеру если указать `classPrefix: 'supports-'`, то `Modernizr` будет добавлять к `html` элементу CSS классы с этой приставкой, к примеру - `supports-no-ambientlight supports-canvas`.
+For example, if you specify `classPrefix: 'supports-'`, then Modernizr will add CSS classes to the `html` element with this prefix, for example,` supports-no-ambientlight supports-canvas`.
 
-Также ознакомтесь с разделом [Search for tests in `.js` and` .css` files](#Поиск-тестов-в-js-и-css-файлах) 
+Also read the section [Search for tests in `.js` and` .css` files](#search-for-tests-in-js-andcss-files), for more information.
 
 
 
@@ -232,14 +233,12 @@ by default `undefined`
 data type `Array.<string>`  
 by default `[]`
 
-Список опций, которые можно добавить для построения `Modernizr`.
+A list of options that can be added to build the `Modernizr`.
    
-- Полный список опций - https://github.com/Modernizr/Modernizr/blob/master/lib/config-all.json#L3
-- Описание большинства опций - https://modernizr.com/docs/#modernizr-api
+- Full list of options - https://github.com/Modernizr/Modernizr/blob/master/lib/config-all.json#L3
+- Description of the majority of options - https://modernizr.com/docs/#modernizr-api
 
-Если для определеных тестов нужны дополнительные опции, они будут добавлены автоматически (на основе метаданных каждого теста, к примеру [`hasEvent`](https://github.com/Modernizr/Modernizr/blob/master/lib/config-all.json#L7) будет автоматически добавлен при тесте [`ambientlight`](https://github.com/Modernizr/Modernizr/blob/master/feature-detects/ambientlight.js))
-
-Если Вы хотите чтобы полученая версия сборки `modernizr.js`, при подключении в браузере, добавляла CSS классы к `html` элементу, следует явно указать опцию `setClasses`
+If additional options are required for certain tests, they will be added automatically (based on the metadata of each test, for example [`hasEvent`](https://github.com/Modernizr/Modernizr/blob/master/lib/config-all.json#L7) will be automatically added during the test [`ambientlight`](https://github.com/Modernizr/Modernizr/blob/master/feature-detects/ambientlight.js))
 
 Example
 

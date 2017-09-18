@@ -4,7 +4,7 @@
 |
 :us: English
 |
-:ru: [Русский язык](./CODE_OF_CONDUCT-RU.md)
+:ru: [Русский](./CODE_OF_CONDUCT-RU.md)
 
 ## Our Pledge
 

@@ -8,7 +8,7 @@
 
 :us: [English](./README.md)
 |
-:ru: Русский язык
+:ru: Русский
 
 > _Gulp плагин для [moderznir](https://github.com/Modernizr/Modernizr), [Wezom](http://wezom.com.ua/) версия_
 
@@ -124,7 +124,7 @@ Name | Type | Description
 
 Список тестов которые можно указать как обязательные. Если такие тесты отсутствуют во входящих файлах, они всеравно будут добавлены в сборку.
 
-Вам следует указывать имена тестов, так как они указанны в метаданных каждого теста (ключ `property`).    
+Вам следует указывать имена тестов, так как они указаны в метаданных каждого теста (ключ `property`).    
 К примеру тест [`canvas/blending.js`](https://github.com/Modernizr/Modernizr/blob/master/feature-detects/canvas/blending.js) имеет значение [`canvasblending`](https://github.com/Modernizr/Modernizr/blob/master/feature-detects/canvas/blending.js#L4).
 
 Есть некоторые файлы тестов, которые имеют несколько тестов в одном файле.  
@@ -220,8 +220,7 @@ gulp.task('modernizr', function() {
 Строка, которая добавляется перед каждым классом CSS.
 
 Например, если указать `classPrefix: 'supports-'`, то `Modernizr` будет добавлять к `html` элементу CSS классы с этой приставкой, к примеру - `supports-no-ambientlight supports-canvas`.
-
-Также ознакомтесь с разделом [Поиск тестов в `.js` и `.css` файлах](#Поиск-тестов-в-js-и-css-файлах) 
+Также ознакомьтесь с разделом [Поиск тестов в `.js` и `.css` файлах](#Поиск-тестов-в-js-и-css-файлах), для большей информации.
 
 
 
@@ -235,7 +234,7 @@ gulp.task('modernizr', function() {
 - Полный список опций - https://github.com/Modernizr/Modernizr/blob/master/lib/config-all.json#L3
 - Описание большинства опций - https://modernizr.com/docs/#modernizr-api
 
-Если для определеных тестов нужны дополнительные опции, они будут добавлены автоматически (на основе метаданных каждого теста, к примеру [`hasEvent`](https://github.com/Modernizr/Modernizr/blob/master/lib/config-all.json#L7) будет автоматически добавлен при тесте [`ambientlight`](https://github.com/Modernizr/Modernizr/blob/master/feature-detects/ambientlight.js))
+Если для определенных тестов нужны дополнительные опции, они будут добавлены автоматически (на основе метаданных каждого теста, к примеру [`hasEvent`](https://github.com/Modernizr/Modernizr/blob/master/lib/config-all.json#L7) будет автоматически добавлен при тесте [`ambientlight`](https://github.com/Modernizr/Modernizr/blob/master/feature-detects/ambientlight.js))
 
 Если Вы хотите чтобы полученая версия сборки `modernizr.js`, при подключении в браузере, добавляла CSS классы к `html` элементу, следует явно указать опцию `setClasses`
 
