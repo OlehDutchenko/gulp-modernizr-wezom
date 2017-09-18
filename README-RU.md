@@ -18,7 +18,7 @@
 ## Основные возможности и преимущества
 
 - [Modernizr v3](https://github.com/Modernizr/Modernizr)
-- [Полное управление составлением итогового файла](#Опции)
+- [Полное управление составлением итогового файла](#gulpmodernizrwezom-options-)
 - Возможность добавлять собственные тесты в общий билд
 - Возможность переписывать родные тесты `Moderznizr` собственными
 - Автоматическое добавление тестов из входящих файлов `gulp` задачи
@@ -82,8 +82,8 @@ Name | Type | Description
 
 Метод построения `modernizr.js`.  
 Метод принимает опции и на их основе производит поиск тестов во входящих файлах. Если для определеных тестов нужны дополнительные опции, они будут добавленны автоматически (на основе метаданных каждого теста, к примеру [`hasEvent`](https://github.com/Modernizr/Modernizr/blob/master/lib/config-all.json#L7) будет автоматически добавлен при тесте [`ambientlight`](https://github.com/Modernizr/Modernizr/blob/master/feature-detects/ambientlight.js))  
- После чего выполняет создание файла `modernizr.js`. 
  
+После чего выполняется создание файла `modernizr.js`.  
 Даже если никаких тестов не будет указано или обнаржено - файл `modernizr.js` все равно будет создан, с ядром библиотеки.
 
 #### Опции
@@ -95,6 +95,33 @@ Name | Type | Description
 по умолчанию `[]`
 
 Список тестов которые можно указать как обязательные. Если такие тесты отсутствуют во входящих файлах, они всеравно будут добавлены в сборку.
+
+Вам следует указывать имена тестов, как они указанны в метаданных каждого теста (ключ `property`).    
+К примеру тест [`canvas/blending.js`](https://github.com/Modernizr/Modernizr/blob/master/feature-detects/canvas/blending.js) имеет значение [`canvasblending`](https://github.com/Modernizr/Modernizr/blob/master/feature-detects/canvas/blending.js#L4).
+
+Есть некоторые файлы тестов, которые имеют несколько тестов в одном файле.  
+К примеру [`canvas/todataurl.js`](https://github.com/Modernizr/Modernizr/blob/master/feature-detects/canvas/todataurl.js) Включает в себя 3 теста [`["todataurljpeg", "todataurlpng", "todataurlwebp"]`](https://github.com/Modernizr/Modernizr/blob/master/feature-detects/canvas/todataurl.js#L4). При необходимости включить любой из трех - остальные также будут добавлены, так это один файл.
+
+Пример
+
+```js
+const gulp = require('gulp');
+const gulpModernizrWezom = require('gulp-modernizr-wezom');
+
+gulp.task('modernizr', function() {
+    let src = [
+        './dist/**/*.css',
+        './dist/**/*.js',
+        '!./dist/**/modernizr.js'
+    ];
+
+    return gulp.src(src)
+        .pipe(gulpModernizrWezom({
+            tests: ['touchevents', 'ambientlight', 'adownload', 'canvasblending']
+        }))
+        .pipe(gulp.dest('./dist/'));
+});
+```
 
 ###### `customTests`
 

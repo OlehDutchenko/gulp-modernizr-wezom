@@ -88,7 +88,10 @@ gulp.task('modernizr', function() {
 
 	return gulp.src(src)
 		.pipe(gulpModernizrWezom({
-			customTests: './custom-feature-detects/'
+			customTests: './custom-feature-detects/',
+			options: [
+				'setClasses'
+			]
 		}))
-		.pipe(gulp.dest('./tmp/'));
+		.pipe(gulp.dest('./detects/'));
 });
