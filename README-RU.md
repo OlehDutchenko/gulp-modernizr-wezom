@@ -15,16 +15,26 @@
 [![js happiness style](https://cdn.rawgit.com/JedWatson/happiness/master/badge.svg)](https://github.com/JedWatson/happiness)
 
 
+## Содержание
+
+- [Основные возможности и преимущества](#Основные-возможности-и-преимущества)
+- [Установка](#Установка)
+- [Пример использования](#Пример-использования)
+- [Методы и Параметры плагина](#Методы-и-Параметры-плагина)
+- [Поиск тестов в `.js` и `.css` файлах](#Поиск-тестов-в-js-и-css-файлах)
+- [Информация о проекте](#Информация-о-проекте)
+
+
 ## Основные возможности и преимущества
 
 - [Modernizr v3 ⇒](https://github.com/Modernizr/Modernizr)
 - [Полное управление составлением итогового файла](#Конфигурация)
-	- [Явное указание нужных тестов, которые нужны при любых условиях](#tests)
+	- [Явное указание тестов, которые нужны при любых условиях](#tests)
 	- [Автоматическое добавление тестов из входящих файлов `gulp` задачи](#Поиск-тестов-в-js-и-css-файлах)
-	- [Явное указание нужных опций, которые нужны при любых условиях](#options)
+	- [Явное указание опций, которые нужны при любых условиях](#options)
 	- [Автоматическое добавление опций `Moderznizr`, если они нужны для тестов сборки](#options)
 	- [Возможность добавлять собственные тесты и переписывать _"родные"_ тесты `Modernizr`](#customtests)
-	- [Возможность исключать нежелательные тесты](#excludetests)
+	- [Возможность исключить нежелательные тесты](#excludetests)
 - [Корректный поиск тестов в `.js` и `.css` файлах](#Поиск-тестов-в-js-и-css-файлах)
 
 ---
@@ -45,14 +55,14 @@ const gulpModernizrWezom = require('gulp-modernizr-wezom');
 
 gulp.task('modernizr', function() {
     let src = [
-        './dist/**/*.css', // входящие файлы в которых будет выролнен поиск тестов
-        './dist/**/*.js', // входящие файлы в которых будет выролнен поиск тестов
+        './dist/**/*.css', // входящие файлы в которых будет выполнен поиск тестов
+        './dist/**/*.js', // входящие файлы в которых будет выполнен поиск тестов
         '!./dist/**/modernizr.js' // исключение файла самой библиотеки Modernizr
     ];
 
     return gulp.src(src)
         .pipe(gulpModernizrWezom({
-            tests: [ // добавить тесты, внезависимости от поиска в файлах
+            tests: [ // добавить тесты принудительно
                 'touchevents',
                 'ambientlight',
                 'adownload',
@@ -89,21 +99,21 @@ gulp.task('modernizr', function() {
 
 #### gulpModernizrWezom.getCustomMetadata (customTests) → `{Array.<Object>}`
 
+Метод возвращает метаданные _"пользовательских"_ тестов `Modernizr` в виде массива.
+
 Параметры 
 
 Name | Type | Description
 --- | --- | ---
 `customTests` | `string` | Относительный путь от _текущей рабочей директории_ (`process.cwd()`) к директории с Вашим пользовательскими тестами. Более детально смотрите [`customTests`](#customtests)
 
-Метод возвращает метаданные _"пользовательских"_ тестов `Modernizr` в виде массива.
-
 ### gulpModernizrWezom( _[config]_ )
 
 Метод построения `modernizr.js`.  
-Метод принимает конфигурацию и на их основе производит поиск тестов во входящих файлах. 
+Метод принимает конфигурацию, на основе которой, производит поиск тестов во входящих файлах. 
  
-После чего выполняется создание файла `modernizr.js`.  
-Даже если никаких тестов не будет указано или обнаржено - файл `modernizr.js` все равно будет создан, с ядром библиотеки.
+После - выполняется сборка файла `modernizr.js`.  
+Даже если никаких тестов не будет указано или обнаружено - файл `modernizr.js` все равно будет создан, с ядром библиотеки.
 
 #### Конфигурация
 
@@ -114,11 +124,11 @@ Name | Type | Description
 
 Список тестов которые можно указать как обязательные. Если такие тесты отсутствуют во входящих файлах, они всеравно будут добавлены в сборку.
 
-Вам следует указывать имена тестов, как они указанны в метаданных каждого теста (ключ `property`).    
+Вам следует указывать имена тестов, так как они указанны в метаданных каждого теста (ключ `property`).    
 К примеру тест [`canvas/blending.js`](https://github.com/Modernizr/Modernizr/blob/master/feature-detects/canvas/blending.js) имеет значение [`canvasblending`](https://github.com/Modernizr/Modernizr/blob/master/feature-detects/canvas/blending.js#L4).
 
 Есть некоторые файлы тестов, которые имеют несколько тестов в одном файле.  
-К примеру [`canvas/todataurl.js`](https://github.com/Modernizr/Modernizr/blob/master/feature-detects/canvas/todataurl.js) Включает в себя 3 теста [`["todataurljpeg", "todataurlpng", "todataurlwebp"]`](https://github.com/Modernizr/Modernizr/blob/master/feature-detects/canvas/todataurl.js#L4). При необходимости включить любой из трех - остальные также будут добавлены, так это один файл.
+К примеру [`canvas/todataurl.js`](https://github.com/Modernizr/Modernizr/blob/master/feature-detects/canvas/todataurl.js) Включает в себя 3 теста [`["todataurljpeg", "todataurlpng", "todataurlwebp"]`](https://github.com/Modernizr/Modernizr/blob/master/feature-detects/canvas/todataurl.js#L4). При необходимости включить любой из трех - остальные также будут добавлены, так как это один файл.
 
 Пример
 
@@ -156,11 +166,11 @@ gulp.task('modernizr', function() {
 Есть несколько пунктов, которые Вы должны соблюдать и знать для корректного включения Ваших тестов в обший билд:
 
 1. Внутри директории должны находится только `js` файлы.
-1. Каждый файл теста должен иметь правильную структуру файла, для корректного построения метаданных `Modernizr`. Заготовка файла [`my-feature-detects/sample.js`](./my-feature-detects/sample.js), пример пользовательского теста [`my-feature-detects/custom-tests/android.js`](./my-feature-detects/custom-tests/android.js)
-1. Если Вы указаываете имя теста, который уже есть в списке _"родных"_ тестов `Modernizr` - то перепишите его выполнение своим.
 1. Вы должны указать путь к родительской директории всех тестов, внутри Вы можете разбивать свои тесты на под директории, они будут включенны также.
 1. Путь к Вашей к диретории НЕ должен содержать директорию с именем `feature-detects`, как пример можете использовать имя `my-feature-detects`
 1. Вы можете указать только один путь к нужной Вам директории
+1. Каждый файл теста должен иметь правильную структуру файла, для корректного построения метаданных `Modernizr`. Заготовка файла - [`my-feature-detects/sample.js`](./my-feature-detects/sample.js), пример пользовательского теста - [`my-feature-detects/custom-tests/android.js`](./my-feature-detects/custom-tests/android.js)
+1. Если Вы указываете имя теста, который уже есть в списке _"родных"_ тестов `Modernizr` - то Вы перепишите его выполнение своим.
 
 
 ##### `excludeTests`
@@ -168,8 +178,8 @@ gulp.task('modernizr', function() {
 тип данных `Array.<string>`  
 по умолчанию `[]`
 
-Список тестов, которые следует исключить при люьых обстаятельствах.  
-Привил имен такое же как при указании свойства [`tests`](#tests)
+Список тестов, которые следует исключить из сборки, при любых обстаятельствах.  
+Правила имен такие же как при указании свойства [`tests`](#tests)
 
 Пример
 
@@ -209,7 +219,7 @@ gulp.task('modernizr', function() {
 
 Строка, которая добавляется перед каждым классом CSS.
 
-К примеру если указать `classPrefix: 'supports-'`, то `Modernizr` добавлять к `html` элементы с этой приставкой, к примеру - `supports-no-ambientlight supports-canvas`.
+Например, если указать `classPrefix: 'supports-'`, то `Modernizr` будет добавлять к `html` элементу CSS классы с этой приставкой, к примеру - `supports-no-ambientlight supports-canvas`.
 
 Также ознакомтесь с разделом [Поиск тестов в `.js` и `.css` файлах](#Поиск-тестов-в-js-и-css-файлах) 
 
@@ -225,9 +235,9 @@ gulp.task('modernizr', function() {
 - Полный список опций - https://github.com/Modernizr/Modernizr/blob/master/lib/config-all.json#L3
 - Описание большинства опций - https://modernizr.com/docs/#modernizr-api
 
-Если для определеных тестов нужны дополнительные опции, они будут добавленны автоматически (на основе метаданных каждого теста, к примеру [`hasEvent`](https://github.com/Modernizr/Modernizr/blob/master/lib/config-all.json#L7) будет автоматически добавлен при тесте [`ambientlight`](https://github.com/Modernizr/Modernizr/blob/master/feature-detects/ambientlight.js))
+Если для определеных тестов нужны дополнительные опции, они будут добавлены автоматически (на основе метаданных каждого теста, к примеру [`hasEvent`](https://github.com/Modernizr/Modernizr/blob/master/lib/config-all.json#L7) будет автоматически добавлен при тесте [`ambientlight`](https://github.com/Modernizr/Modernizr/blob/master/feature-detects/ambientlight.js))
 
-Если Вы хотите чтобы получаная версия сборки `modernizr.js`, при подключении в браузере, добавляла CSS классы к `html` элементу, следует явно указать опцию `setClasses`
+Если Вы хотите чтобы полученая версия сборки `modernizr.js`, при подключении в браузере, добавляла CSS классы к `html` элементу, следует явно указать опцию `setClasses`
 
 Пример
 
@@ -273,7 +283,7 @@ gulp.task('modernizr', function() {
 
 Минифицировать итоговый файл `modernizr.js`.
 
-Вы также можете использовать альтернативные методы с минификации, к примеру используя [`gulp-uglify`](https://github.com/terinjokes/gulp-uglify) и, при необходимости [`gulp-sourcemaps`](https://github.com/gulp-sourcemaps/gulp-sourcemaps)
+Вы также можете использовать альтернативные методы для минификации, например используя [`gulp-uglify`](https://github.com/terinjokes/gulp-uglify) и, при необходимости, [`gulp-sourcemaps`](https://github.com/gulp-sourcemaps/gulp-sourcemaps)
 
 Пример
 
