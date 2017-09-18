@@ -348,7 +348,7 @@ To find the tests, plugin use the following regular expression:
 /\.(no-)?TEST\b[^-]/g
 ```
 
-`TEST` - this is the name of each test in the loop.
+`TEST` - name of each test in the loop.
 
 If you use the property `classPrefix`, then the search for the tests in CSS files will also be performed taking into account the value of this property.
 
@@ -367,7 +367,7 @@ To find the tests, plugin use the following regular expression:
 /Modernizr\.TEST\b[^-]/g
 ```
 
-`TEST` - this is the name of each test in the loop.
+`TEST` - name of each test in the loop.
 
 ---
 
