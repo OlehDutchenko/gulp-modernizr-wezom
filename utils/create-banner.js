@@ -17,21 +17,11 @@ const columns = require('cli-columns');
 const pkg = require('../package.json');
 
 // ----------------------------------------
-// Private
-// ----------------------------------------
-
-// в этой части файла создаються и описываються
-// вспомогательные значения и методы, который будут использованы
-// внутри вашего основного кода, ради которого создан этот файл
-// Также слово приватный - обозначает что эти значения и методы
-// не будут доступны за пределами этого файла
-
-// ----------------------------------------
 // Public
 // ----------------------------------------
 
 function createBanner (entryTests, entryFoundedTests, entryExcludeTests, jsFile) {
-	let start = chalk.gray('>>') + ' ';
+	let start = chalk.gray('>>');
 	let foundedTests = [];
 	let num = 1;
 	entryFoundedTests.forEach(founded => foundedTests.push(`${start + chalk.gray(num++)} ${founded.path}`, chalk.green(columns(founded.tests))));
@@ -40,17 +30,17 @@ function createBanner (entryTests, entryFoundedTests, entryExcludeTests, jsFile)
 
 	let msg = [
 		'',
-		`${pkg.name}@${pkg.version} result`,
+		chalk.bold(`${pkg.name}@${pkg.version} result`),
 		'',
-		start + 'User required tests:',
+		chalk.bold(`${start} User required tests:`),
 		entryTests
 	];
 
 	if (foundedTests.length) {
-		msg.push('', start + 'The tests found in the following files:', foundedTests.join('\n'));
+		msg.push('', chalk.bold(`${start} The tests found in the following files:`), foundedTests.join('\n'));
 	}
 
-	msg.push('', start + 'Excluded tests in all lists:', entryExcludeTests);
+	msg.push('', chalk.bold(`${start} Excluded tests in all lists:`), entryExcludeTests);
 
 	console.log(msg.join('\n') + '\n');
 }
