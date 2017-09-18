@@ -8,7 +8,7 @@ const gulp = require('gulp');
 const jsdoc = require('gulp-jsdoc3');
 const del = require('del');
 
-const modernizr = require('./index');
+const gulpModernizrWezom = require('./index');
 
 // ----------------------------------------
 // Private
@@ -87,12 +87,10 @@ gulp.task('modernizr', function() {
 	];
 
 	return gulp.src(src)
-		.pipe(modernizr({
-			classPrefix: 'supports-'
+		.pipe(gulpModernizrWezom({
+			customTests: './custom-feature-detects/'
 		}))
-		.on('data', file => {
-			// console.log(file);
-		});
+		.pipe(gulp.dest('./tmp/'));
 });
 
 // buildModernizr({

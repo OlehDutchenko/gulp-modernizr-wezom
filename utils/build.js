@@ -11,6 +11,7 @@
 
 // modules
 const path = require('path');
+const chalk = require('chalk');
 const lodash = require('lodash');
 const modernizr = require('modernizr');
 
@@ -48,14 +49,14 @@ function defaultCb (fn) {
  */
 const relativePath = getRelativePath();
 
-function getTest (featuresDetects, filteredTest, data, isCustomTest) {
+function getTest (featureDetects, filteredTest, data, isCustomTest) {
 	let index = filteredTest.indexOf(data.property);
 	if (~index) {
 		let amdPath = data.amdPath;
 		if (isCustomTest) {
 			amdPath = path.join(relativePath, amdPath).replace(/\\/g, '/');
 		}
-		featuresDetects.push(amdPath);
+		featureDetects.push(amdPath);
 		filteredTest.splice(index, 1);
 	}
 }
@@ -71,8 +72,6 @@ function getTest (featuresDetects, filteredTest, data, isCustomTest) {
  * @param {string} [config.classPrefix=''] - A string that is added before each CSS class
  * @param {Array.<string>} [config.options=[]] - Modernizr build options
  * @param {boolean} [config.minify=false] - Minimise resulting file
- * @param {boolean} [config.enableJSClass=true] - Whether or not to update `.no-js` to `.js` on the root element
- * @param {boolean} [config.enableClasses=true] - Whether or not Modernizr should add its CSS classes at all
  * @param {Array.<Object>} [config.metadata=[]] - Metadata of own Modernizr tests
  * @param {Array.<Object>} [config.customMetadata=[]] - Metadata of user custom Modernizr tests
  * @param {Function} [done] - Success callback
@@ -86,8 +85,6 @@ function build (config = {}, done, fail) {
 		classPrefix = '',
 		options = [],
 		minify = false,
-		enableJSClass = true,
-		enableClasses = true,
 		metadata = [],
 		customMetadata = []
 	} = lodash.merge({}, config);
@@ -95,27 +92,44 @@ function build (config = {}, done, fail) {
 	done = defaultCb(done);
 	fail = defaultCb(fail);
 
-	let featuresDetects = [];
+	let featureDetects = [];
 	let filteredTest = tests.filter(test => !~excludeTests.indexOf(test));
+	customMetadata.forEach(data => getTest(featureDetects, filteredTest, data, true));
 
-	customMetadata.forEach(data => getTest(featuresDetects, filteredTest, data, true));
+	let classPrefixStr = classPrefix ? chalk.green(`"${classPrefix}"`) : chalk.blue('undefined');
+	let optionsStr = options.length ? chalk.green(`["${options.sort().join('", "')}"]`) : chalk.blue('undefined');
+
 	if (filteredTest.length) {
 		for (let i = 0; i < metadata.length; i++) {
-			getTest(featuresDetects, filteredTest, metadata[i]);
+			getTest(featureDetects, filteredTest, metadata[i]);
 			if (!filteredTest.length) {
 				break;
 			}
 		}
 	}
 
+	let start = chalk.gray.bold('>>');
+	let msg = [
+		'',
+		`${start} User build options:`,
+		chalk.cyan([
+			`- options: ${optionsStr}`,
+			`- classPrefix: ${classPrefixStr}`,
+			`- minify: ${chalk.blue(minify)}`,
+			`- feature-detects: [`,
+			chalk.green('  "' + featureDetects.join('"\n  "') + '"'),
+			']'
+		].join('\n')),
+		'', `${start} Building your modernizr.js`
+	];
+	console.log(msg.join('\n'));
+
 	try {
 		modernizr.build({
 			classPrefix,
 			options,
 			minify,
-			enableJSClass,
-			enableClasses,
-			'feature-detects': featuresDetects
+			'feature-detects': featureDetects
 		}, done);
 	} catch (err) {
 		fail(err);

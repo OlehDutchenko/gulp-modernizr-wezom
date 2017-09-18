@@ -15,6 +15,7 @@ const gutil = require('gulp-util');
 const lodash = require('lodash');
 const modernizr = require('modernizr');
 const Vinyl = require('vinyl');
+const chalk = require('chalk');
 
 // data
 const pkg = require('./package.json');
@@ -24,7 +25,6 @@ const buildModernizr = require('./utils/build');
 const getCustomTestsPath = require('./utils/custom-tests-path');
 const getCustomMetadata = require('./utils/custom-metada');
 const findTests = require('./utils/find-tests');
-const createBanner = require('./utils/create-banner');
 
 // ----------------------------------------
 // Private
@@ -73,8 +73,6 @@ function parseProps (list) {
  * @param {string} [config.classPrefix=''] - A string that is added before each CSS class
  * @param {Array.<string>} [config.options=[]] - Modernizr build options
  * @param {boolean} [config.minify=false] - Minimise resulting file
- * @param {boolean} [config.enableJSClass=true] - Whether or not to update `.no-js` to `.js` on the root element
- * @param {boolean} [config.enableClasses=true] - Whether or not Modernizr should add its CSS classes at all
  * @return {DestroyableTransform}
  */
 function gulpModernizrWezom (config = {}) {
@@ -84,9 +82,7 @@ function gulpModernizrWezom (config = {}) {
 		excludeTests = [],
 		classPrefix = '',
 		options = [],
-		minify = false,
-		enableJSClass = true,
-		enableClasses = true
+		minify = false
 	} = lodash.merge({}, config);
 
 	let testList = [];
@@ -107,7 +103,6 @@ function gulpModernizrWezom (config = {}) {
 	function afterRead (cb) {
 		let entryTests = tests.concat([]);
 		let entryExcludeTests = excludeTests.concat([]);
-
 		foundedTests.forEach(founded => {
 			founded.tests.forEach(test => {
 				if (!~tests.indexOf(test)) {
@@ -116,25 +111,45 @@ function gulpModernizrWezom (config = {}) {
 			});
 		});
 
+		let start = chalk.gray.bold('>>');
+		let foundedTestsInfo = [];
+		let num = 1;
+
+		entryTests = entryTests.length ? chalk.green(entryTests.join(', ')) : chalk.blue('no tests');
+		entryExcludeTests = entryExcludeTests.length ? chalk.red(entryExcludeTests.sort().join(', ')) : chalk.blue('no excluded tests');
+		foundedTests.forEach(founded => {
+			let filePath = chalk.cyan(founded.path);
+			let fileNum = `${start} ${chalk.gray.bold(num++)}`;
+			let fileTests = chalk.green(founded.tests.sort().join(', '));
+			foundedTestsInfo.push('', `${fileNum} ${filePath}`, fileTests);
+		});
+
+		let msg = ['', pkg.name + chalk.cyan('#' + pkg.version) + ' result', '', `${start} User required tests:`, entryTests];
+		if (foundedTestsInfo.length) {
+			msg.push('', `${start} The tests found in the following files:`, foundedTestsInfo.join('\n'));
+		}
+		msg.push('', `${start} Excluded tests in all lists:`, entryExcludeTests);
+		console.log(msg.join('\n'));
+
 		buildModernizr({
 			tests,
 			excludeTests,
 			classPrefix,
 			options,
 			minify,
-			enableJSClass,
-			enableClasses,
 			metadata,
 			customMetadata
 		}, (result) => {
-			let jsFile = new Vinyl({
+			console.log(chalk.yellow('Done!\n'));
+			this.push(new Vinyl({
 				path: 'modernizr.js',
 				contents: Buffer.from(result)
-			});
-			createBanner(entryTests, foundedTests, entryExcludeTests, jsFile);
-			this.push(jsFile);
+			}));
 			cb();
-		}, (err) => cb(err));
+		}, (err) => {
+			console.log(chalk.red('Filed\n'));
+			cb(err);
+		});
 	}
 
 	return through2.obj(readBuffer, afterRead);
