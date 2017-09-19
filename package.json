@@ -1,6 +1,6 @@
 {
   "name": "gulp-modernizr-wezom",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Gulp plugin for moderznir, Wezom studio version",
   "main": "index.js",
   "scripts": {
@@ -32,7 +32,6 @@
   "homepage": "https://github.com/dutchenkoOleg/gulp-modernizr-wezom#readme",
   "dependencies": {
     "chalk": "^2.1.0",
-    "cli-columns": "^3.1.2",
     "gulp-not-supported-file": "^1.2.0",
     "gulp-util": "^3.0.8",
     "lodash": "^4.17.4",
