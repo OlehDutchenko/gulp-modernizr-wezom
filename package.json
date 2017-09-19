@@ -4,7 +4,7 @@
   "description": "Gulp plugin for moderznir, Wezom studio version",
   "main": "index.js",
   "scripts": {
-    "test": "happiness \"./index.js\"  \"./utils/**/*.js\" --verbose --fix | snazzy"
+    "test": "happiness \"./*.js\"  \"./utils/**/*.js\" --verbose --fix | snazzy"
   },
   "repository": {
     "type": "git",

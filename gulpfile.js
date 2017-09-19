@@ -81,7 +81,7 @@ gulp.task('docs-watch', gulp.series('docs', function () {
 	gulp.watch(docsSrc, gulp.series('docs'));
 }));
 
-gulp.task('modernizr', function() {
+gulp.task('modernizr', function () {
 	let src = [
 		'./detects/**/*.css',
 		'./detects/**/*.js',
