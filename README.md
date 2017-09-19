@@ -22,7 +22,7 @@
 - [Key Features and Benefits](#key-features-and-benefits)
 - [Installation](#installation)
 - [Example of use](#example-of-use)
-- [Methods and Parameters of the Plugin](#methods-and-parameters-of-the-plugin)
+- [Methods and Properties of the Plugin](#methods-and-properties-of-the-plugin)
 - [Search for tests in `.js` and` .css` files](#search-for-tests-in-js-andcss-files)
 - [Project info](#project-info)
 
@@ -85,15 +85,15 @@ gulp.task('modernizr', function() {
 });
 ```
 
-## Methods and Parameters of the Plugin
+## Methods and Properties of the Plugin
 
 #### gulpModernizrWezom.pluginName
 
-Property. Name of the plug-in in string
+String property. Name of the plug-in
 
 #### gulpModernizrWezom.pluginVersion
 
-Property. The version of the plug-in in string
+String property. The version of the plug-in
 
 #### gulpModernizrWezom.getMetadata() → `{Array.<Object>}`
 
@@ -107,7 +107,7 @@ Parameters
 
 Name | Type | Description
 --- | --- | ---
-`customTests` | `string` | The relative path from the current working directory (`process.cwd ()`) to the directory with your user tests. For more details see [`customTests`](#customtests)
+`customTests` | `string` | The relative path from the current working directory (`process.cwd()`) to the directory with your user tests. For more details see [`customTests`](#customtests)
 
 ### gulpModernizrWezom( _[config]_ )
 
@@ -164,7 +164,7 @@ gulp.task('modernizr', function() {
 data type `string`  
 by default `undefined`
 
-The relative path from the current working directory (`process.cwd ()`) to the directory with your user tests
+The relative path from the current working directory (`process.cwd()`) to the directory with your user tests
 
 There are several points that you must follow and know in order to correctly include your tests in the general build:
 
@@ -222,7 +222,7 @@ by default `undefined`
 
 A string that is added before each CSS class.
 
-For example, if you specify `classPrefix: 'supports-'`, then Modernizr will add CSS classes to the `html` element with this prefix, for example,` supports-no-ambientlight supports-canvas`.
+For example, if you specify `classPrefix: 'supports-'`, then Modernizr will add CSS classes to the `html` element with this prefix, like as` supports-no-ambientlight supports-canvas`.
 
 Also read the section [Search for tests in `.js` and` .css` files](#search-for-tests-in-js-andcss-files), for more information.
 
@@ -323,7 +323,7 @@ gulp.task('modernizr', function() {
         .pipe(gulpSourcemaps.init())
         .pipe(gulpUglify({
             mangle: {
-            	except: ['Modernizr']
+            	reserved: ['Modernizr']
             }
         }))
         .pipe(gulpSourcemaps.write('/'))
@@ -348,14 +348,30 @@ To find the tests, plugin use the following regular expression:
 /\.(no-)?TEST\b[^-]/g
 ```
 
-`TEST` - name of each test in the loop.
+`TEST` - name of each test in the loop.  
+A few examples:
+
+```js
+/\.(no-)?adownload\b[^-]/g
+/\.(no-)?canvas\b[^-]/g
+/\.(no-)?cssanimations\b[^-]/g
+/\.(no-)?opacity\b[^-]/g
+/\.(no-)?touchevents\b[^-]/g
+// ...
+```
+
 
 If you use the property `classPrefix`, then the search for the tests in CSS files will also be performed taking into account the value of this property.
 
 An example of a regular expression for searching, if `classPrefix: 'supports-'`
 
 ```js
+/\.supports-(no-)?adownload\b[^-]/g
 /\.supports-(no-)?canvas\b[^-]/g
+/\.supports-(no-)?cssanimations\b[^-]/g
+/\.supports-(no-)?opacity\b[^-]/g
+/\.supports-(no-)?touchevents\b[^-]/g
+// ...
 ```
 
 ___JS files___
@@ -367,7 +383,17 @@ To find the tests, plugin use the following regular expression:
 /Modernizr\.TEST\b[^-]/g
 ```
 
-`TEST` - name of each test in the loop.
+`TEST` - name of each test in the loop.  
+A few examples:
+
+```js
+/Modernizr\.adownload\b[^-]/g
+/Modernizr\.canvas\b[^-]/g
+/Modernizr\.cssanimations\b[^-]/g
+/Modernizr\.opacity\b[^-]/g
+/Modernizr\.touchevents\b[^-]/g
+// ...
+```
 
 ---
 

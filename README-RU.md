@@ -20,7 +20,7 @@
 - [Основные возможности и преимущества](#Основные-возможности-и-преимущества)
 - [Установка](#Установка)
 - [Пример использования](#Пример-использования)
-- [Методы и Параметры плагина](#Методы-и-Параметры-плагина)
+- [Методы и Свойства плагина](#Методы-и-Свойства-плагина)
 - [Поиск тестов в `.js` и `.css` файлах](#Поиск-тестов-в-js-и-css-файлах)
 - [Информация о проекте](#Информация-о-проекте)
 
@@ -83,7 +83,7 @@ gulp.task('modernizr', function() {
 });
 ```
 
-## Методы и Параметры плагина
+## Методы и Свойства плагина
 
 #### gulpModernizrWezom.pluginName
 
@@ -321,7 +321,7 @@ gulp.task('modernizr', function() {
         .pipe(gulpSourcemaps.init())
         .pipe(gulpUglify({
             mangle: {
-            	except: ['Modernizr']
+            	reserved: ['Modernizr']
             }
         }))
         .pipe(gulpSourcemaps.write('/'))
@@ -346,14 +346,29 @@ ___CSS файлы___
 /\.(no-)?TEST\b[^-]/g
 ```
 
-`TEST` - это имя каждого теста в цикле.
+`TEST` - имя каждого теста в цикле.  
+Несколько примеров:
+
+```js
+/\.(no-)?adownload\b[^-]/g
+/\.(no-)?canvas\b[^-]/g
+/\.(no-)?cssanimations\b[^-]/g
+/\.(no-)?opacity\b[^-]/g
+/\.(no-)?touchevents\b[^-]/g
+// ...
+```
 
 Если Вы используете свойство `classPrefix`, то поиск тестов в CSS файлах будет выполнен также с учетом значения этого свойтва.  
 
 Пример регулярного выражения для поиска, если `classPrefix: 'supports-'`
 
 ```js
+/\.supports-(no-)?adownload\b[^-]/g
 /\.supports-(no-)?canvas\b[^-]/g
+/\.supports-(no-)?cssanimations\b[^-]/g
+/\.supports-(no-)?opacity\b[^-]/g
+/\.supports-(no-)?touchevents\b[^-]/g
+// ...
 ```
 
 ___JS файлы___
@@ -365,7 +380,17 @@ ___JS файлы___
 /Modernizr\.TEST\b[^-]/g
 ```
 
-`TEST` - это имя каждого теста в цикле.
+`TEST` - имя каждого теста в цикле.  
+Несколько примеров:
+
+```js
+/Modernizr\.adownload\b[^-]/g
+/Modernizr\.canvas\b[^-]/g
+/Modernizr\.cssanimations\b[^-]/g
+/Modernizr\.opacity\b[^-]/g
+/Modernizr\.touchevents\b[^-]/g
+// ...
+```
 
 
 

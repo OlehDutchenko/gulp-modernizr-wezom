@@ -5,6 +5,8 @@
 // ----------------------------------------
 
 const gulp = require('gulp');
+const uglify = require('gulp-uglify');
+const sourcemaps = require('gulp-sourcemaps');
 const jsdoc = require('gulp-jsdoc3');
 const del = require('del');
 
@@ -93,5 +95,12 @@ gulp.task('modernizr', function() {
 				'setClasses'
 			]
 		}))
+		.pipe(sourcemaps.init())
+		.pipe(uglify({
+			mangle: {
+				reserved: ['Modernizr']
+			}
+		}))
+		.pipe(sourcemaps.write('/'))
 		.pipe(gulp.dest('./detects/'));
 });
