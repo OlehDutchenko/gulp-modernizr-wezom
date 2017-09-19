@@ -90,9 +90,18 @@ gulp.task('modernizr', function () {
 
 	return gulp.src(src)
 		.pipe(gulpModernizrWezom({
+			tests: [
+				'touchevents'
+			],
 			customTests: './my-feature-detects/custom-tests',
+			excludeTests: [
+				'svg',
+				'opacity',
+				'checked'
+			],
 			options: [
-				'setClasses'
+				'setClasses',
+				'mq'
 			]
 		}))
 		.pipe(sourcemaps.init())

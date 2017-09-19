@@ -1,10 +1,11 @@
 {
   "name": "gulp-modernizr-wezom",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Gulp plugin for moderznir, Wezom studio version",
   "main": "index.js",
   "scripts": {
-    "test": "happiness \"./*.js\"  \"./utils/**/*.js\" --verbose --fix | snazzy"
+    "happiness": "happiness \"./*.js\"  \"./utils/**/*.js\" --verbose --fix | snazzy",
+    "test": "npm run happiness"
   },
   "repository": {
     "type": "git",
