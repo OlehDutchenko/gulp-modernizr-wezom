@@ -1,6 +1,6 @@
 {
   "name": "gulp-modernizr-wezom",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Gulp plugin for moderznir, Wezom studio version",
   "main": "index.js",
   "scripts": {

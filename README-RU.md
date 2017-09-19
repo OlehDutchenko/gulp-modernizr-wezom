@@ -343,18 +343,18 @@ ___CSS файлы___
 Для поиска тестов используется следующее регулярное выражение:
 
 ```js
-/\.(no-)?TEST\b[^-]/g
+/\.(no-)?TEST\b[^-](((?![\{|\}]).|(\r)?\n)*)\{/g
 ```
 
 `TEST` - имя каждого теста в цикле.  
 Несколько примеров:
 
 ```js
-/\.(no-)?adownload\b[^-]/g
-/\.(no-)?canvas\b[^-]/g
-/\.(no-)?cssanimations\b[^-]/g
-/\.(no-)?opacity\b[^-]/g
-/\.(no-)?touchevents\b[^-]/g
+/\.(no-)?adownload\b[^-](((?![\{|\}]).|(\r)?\n)*)\{/g
+/\.(no-)?canvas\b[^-](((?![\{|\}]).|(\r)?\n)*)\{/g
+/\.(no-)?cssanimations\b[^-](((?![\{|\}]).|(\r)?\n)*)\{/g
+/\.(no-)?opacity\b[^-](((?![\{|\}]).|(\r)?\n)*)\{/g
+/\.(no-)?touchevents\b[^-](((?![\{|\}]).|(\r)?\n)*)\{/g
 // ...
 ```
 
@@ -363,11 +363,11 @@ ___CSS файлы___
 Пример регулярного выражения для поиска, если `classPrefix: 'supports-'`
 
 ```js
-/\.supports-(no-)?adownload\b[^-]/g
-/\.supports-(no-)?canvas\b[^-]/g
-/\.supports-(no-)?cssanimations\b[^-]/g
-/\.supports-(no-)?opacity\b[^-]/g
-/\.supports-(no-)?touchevents\b[^-]/g
+/\.supports-(no-)?adownload\b[^-](((?![\{|\}]).|(\r)?\n)*)\{/g
+/\.supports-(no-)?canvas\b[^-](((?![\{|\}]).|(\r)?\n)*)\{/g
+/\.supports-(no-)?cssanimations\b[^-](((?![\{|\}]).|(\r)?\n)*)\{/g
+/\.supports-(no-)?opacity\b[^-](((?![\{|\}]).|(\r)?\n)*)\{/g
+/\.supports-(no-)?touchevents\b[^-](((?![\{|\}]).|(\r)?\n)*)\{/g
 // ...
 ```
 

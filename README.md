@@ -23,7 +23,7 @@
 - [Installation](#installation)
 - [Example of use](#example-of-use)
 - [Methods and Properties of the Plugin](#methods-and-properties-of-the-plugin)
-- [Search for tests in `.js` and` .css` files](#search-for-tests-in-js-andcss-files)
+- [Search for tests in `.js` and` .css` files](#search-for-tests-in-js-and-css-files)
 - [Project info](#project-info)
 
 
@@ -32,12 +32,12 @@
 - [Modernizr v3 ⇒](https://github.com/Modernizr/Modernizr)
 - [Full control over the building your modernizr.js](#configuration)
 	- [Explicit indication of tests that are required under any conditions](#tests)
-	- [Automatic addition of tests from the incoming files of `gulp` task](#search-for-tests-in-js-andcss-files)
+	- [Automatic addition of tests from the incoming files of `gulp` task](#search-for-tests-in-js-and-css-files)
 	- [Explicit specification of options that are required under any conditions](#options)
 	- [Automatic addition of `Moderznizr` options, if they are needed for assembly tests](#options)
 	- [The ability to add custom tests and rewrite _"native"_ tests "Modernizr"](#customtests)
 	- [Ability to exclude unwanted tests](#excludetests)
-- [Correct search of tests in `.js` and` .css` files](#search-for-tests-in-js-andcss-files)
+- [Correct search of tests in `.js` and` .css` files](#search-for-tests-in-js-and-css-files)
 
 ---
 
@@ -224,7 +224,7 @@ A string that is added before each CSS class.
 
 For example, if you specify `classPrefix: 'supports-'`, then Modernizr will add CSS classes to the `html` element with this prefix, like as` supports-no-ambientlight supports-canvas`.
 
-Also read the section [Search for tests in `.js` and` .css` files](#search-for-tests-in-js-andcss-files), for more information.
+Also read the section [Search for tests in `.js` and` .css` files](#search-for-tests-in-js-and-css-files), for more information.
 
 
 
@@ -334,7 +334,7 @@ gulp.task('modernizr', function() {
 
 ---
 
-### Search for tests in `.js` and` .css` files
+### Search for tests in `.js` and `.css` files
 
 To search for the necessary tests, the content of each incoming file is used. Text content is tested by regular expressions, which are compiled for each of the tests.
 
@@ -345,18 +345,18 @@ ___CSS files___
 To find the tests, plugin use the following regular expression:
 
 ```js
-/\.(no-)?TEST\b[^-]/g
+/\.(no-)?TEST\b[^-](((?![\{|\}]).|(\r)?\n)*)\{/g
 ```
 
 `TEST` - name of each test in the loop.  
 A few examples:
 
 ```js
-/\.(no-)?adownload\b[^-]/g
-/\.(no-)?canvas\b[^-]/g
-/\.(no-)?cssanimations\b[^-]/g
-/\.(no-)?opacity\b[^-]/g
-/\.(no-)?touchevents\b[^-]/g
+/\.(no-)?adownload\b[^-](((?![\{|\}]).|(\r)?\n)*)\{/g
+/\.(no-)?canvas\b[^-](((?![\{|\}]).|(\r)?\n)*)\{/g
+/\.(no-)?cssanimations\b[^-](((?![\{|\}]).|(\r)?\n)*)\{/g
+/\.(no-)?opacity\b[^-](((?![\{|\}]).|(\r)?\n)*)\{/g
+/\.(no-)?touchevents\b[^-](((?![\{|\}]).|(\r)?\n)*)\{/g
 // ...
 ```
 
@@ -366,11 +366,11 @@ If you use the property `classPrefix`, then the search for the tests in CSS file
 An example of a regular expression for searching, if `classPrefix: 'supports-'`
 
 ```js
-/\.supports-(no-)?adownload\b[^-]/g
-/\.supports-(no-)?canvas\b[^-]/g
-/\.supports-(no-)?cssanimations\b[^-]/g
-/\.supports-(no-)?opacity\b[^-]/g
-/\.supports-(no-)?touchevents\b[^-]/g
+/\.supports-(no-)?adownload\b[^-](((?![\{|\}]).|(\r)?\n)*)\{/g
+/\.supports-(no-)?canvas\b[^-](((?![\{|\}]).|(\r)?\n)*)\{/g
+/\.supports-(no-)?cssanimations\b[^-](((?![\{|\}]).|(\r)?\n)*)\{/g
+/\.supports-(no-)?opacity\b[^-](((?![\{|\}]).|(\r)?\n)*)\{/g
+/\.supports-(no-)?touchevents\b[^-](((?![\{|\}]).|(\r)?\n)*)\{/g
 // ...
 ```
 

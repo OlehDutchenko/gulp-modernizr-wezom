@@ -6,14 +6,15 @@
 	position: relative;
 }
 
-.todataurlpng.svg.canvas.touchevents {
+.todataurlpng.canvas.touchevents {
 	position: relative;
 }
 
 .canvasblending {
 	position: static;
+	background: url("./pic/external-link-hover.svg") top left/0 no-repeat;
 }
 
-.supports-no-svg {
+.supports-no-ambientlight {
 	position: relative;
 }
