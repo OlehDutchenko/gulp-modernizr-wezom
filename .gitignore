@@ -17,3 +17,5 @@ thumbs.db
 
 # workflow
 api-docs/
+detects/modernizr.js
+detects/modernizr.js.map

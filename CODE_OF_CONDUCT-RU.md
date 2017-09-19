@@ -4,7 +4,7 @@
 |
 :us: [English](./CODE_OF_CONDUCT.md)
 |
-:ru: Русский язык
+:ru: Русский
 
 ## Наш залог
 

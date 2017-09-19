@@ -4,7 +4,7 @@
 |
 :us: English
 |
-:ru: [Русский язык](./CONTRIBUTING-RU.md)
+:ru: [Русский](./CONTRIBUTING-RU.md)
 
 Contributions welcome!
 

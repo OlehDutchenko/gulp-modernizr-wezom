@@ -4,7 +4,7 @@
   "description": "Gulp plugin for moderznir, Wezom studio version",
   "main": "index.js",
   "scripts": {
-    "test": "happiness \"./index.js\" --verbose --fix | snazzy"
+    "test": "happiness \"./*.js\"  \"./utils/**/*.js\" --verbose --fix | snazzy"
   },
   "repository": {
     "type": "git",
@@ -18,7 +18,7 @@
     "gulp",
     "gulp4",
     "gulpplugin",
-	"html5",
+    "html5",
     "css3",
     "browser",
     "feature detection"
@@ -36,12 +36,16 @@
     "gulp-util": "^3.0.8",
     "lodash": "^4.17.4",
     "modernizr": "^3.5.0",
-    "through2": "^2.0.3"
+    "through2": "^2.0.3",
+    "vinyl": "^2.1.0"
   },
   "devDependencies": {
     "del": "^3.0.0",
     "gulp": "github:gulpjs/gulp#4.0",
     "gulp-jsdoc3": "^1.0.1",
+    "gulp-mocha": "^4.3.1",
+    "gulp-sourcemaps": "^2.6.1",
+    "gulp-uglify": "^3.0.0",
     "happiness": "^10.0.2",
     "jsdoc-simple-theme": "^1.1.0",
     "snazzy": "^7.0.0"
