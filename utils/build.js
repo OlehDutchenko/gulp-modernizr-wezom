@@ -56,7 +56,9 @@ function getTest (featureDetects, filteredTest, data, isCustomTest) {
 		if (isCustomTest) {
 			amdPath = path.join(relativePath, amdPath).replace(/\\/g, '/');
 		}
-		featureDetects.push(amdPath);
+		if (!~featureDetects.indexOf(amdPath)) {
+			featureDetects.push(amdPath);
+		}
 		filteredTest.splice(index, 1);
 	}
 }

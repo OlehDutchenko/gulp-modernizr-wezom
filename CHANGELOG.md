@@ -11,6 +11,12 @@
 
 ---
 
-## 1.1.0 [19.09.2017]
+## 1.1.1 [2017.10.24]
 
-- Fix regular expression for searching tests in CSS files
+- Fixed double paths in result log 
+
+---
+
+## 1.1.0 [2017.09.19]
+
+- Fixed regular expression for searching tests in CSS files
