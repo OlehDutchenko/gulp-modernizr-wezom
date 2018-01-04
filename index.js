@@ -3,6 +3,8 @@
 /**
  * Plugin index
  * @module
+ * @author Oleg Dutchenko <dutchenko.o.dev@gmail.com>
+ * @version 1.1.4
  */
 
 // ----------------------------------------
@@ -12,9 +14,9 @@
 // modules
 const through2 = require('through2');
 const notSupportedFile = require('gulp-not-supported-file');
-const gutil = require('gulp-util');
 const lodash = require('lodash');
 const modernizr = require('modernizr');
+const PluginError = require('plugin-error');
 const Vinyl = require('vinyl');
 const chalk = require('chalk');
 
@@ -39,7 +41,7 @@ const findTests = require('./utils/find-tests');
  * @private
  */
 function pluginError (error, errorOptions) {
-	return new gutil.PluginError(`${pkg.name}@${pkg.version}`, error, errorOptions);
+	return new PluginError(`${pkg.name}@${pkg.version}`, error, errorOptions);
 }
 
 /**

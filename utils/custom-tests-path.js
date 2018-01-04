@@ -3,6 +3,8 @@
 /**
  * Get custom tests path as property
  * @module
+ * @author Oleg Dutchenko <dutchenko.o.dev@gmail.com>
+ * @version 1.1.4
  */
 
 // ----------------------------------------
